@@ -1,0 +1,15 @@
+[Unit]
+Description=飞书 Gateway 桥接服务
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/feishu-bridge
+ExecStart=/root/.nvm/versions/node/v22.13.0/bin/node server.js
+Restart=always
+RestartSec=5
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
