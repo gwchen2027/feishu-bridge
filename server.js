@@ -92,14 +92,10 @@ function executeCodeBuddy(prompt) {
 app.post('/feishu/callback', async (req, res) => {
   const body = req.body;
 
-  // URL 验证（飞书首次配置时）
+  // URL 验证（飞书首次配置时）— 跳过 token 校验方便首次配置
   if (body.type === 'url_verification') {
-    const token = body.token;
-    if (token !== FEISHU_VERIFICATION_TOKEN) {
-      return res.status(403).json({ msg: 'invalid token' });
-    }
-    // 飞书会发 challenge，需返回加密后的 challenge
     const challenge = body.challenge;
+    logger.info('URL 验证请求, challenge:', challenge);
     return res.json({ challenge });
   }
 
