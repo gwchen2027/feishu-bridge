@@ -40,7 +40,7 @@ echo -e "${GREEN}依赖完成 ✓${NC}"
 echo -e "\n${YELLOW}[5/6] 启动服务...${NC}"
 pkill -f "node.*server.js" 2>/dev/null || true
 sleep 1
-nohup "$NODE_BIN/node" server.js > /var/log/feishu-bridge.log 2>&1 &
+nohup "$NODE_BIN/node" server.js > "$DIR/feishu-bridge.log" 2>&1 &
 PID=$!
 sleep 3
 
@@ -48,7 +48,7 @@ if kill -0 $PID 2>/dev/null; then
   echo -e "${GREEN}进程运行中 PID=$PID ✓${NC}"
 else
   echo -e "${RED}进程崩溃，日志：${NC}"
-  cat /var/log/feishu-bridge.log
+  cat "$DIR/feishu-bridge.log"
   exit 1
 fi
 
@@ -57,11 +57,11 @@ curl -s http://localhost:3000/health && echo "" || echo -e "${RED}失败${NC}"
 
 echo ""
 echo "=== 日志 ==="
-tail -10 /var/log/feishu-bridge.log
+tail -10 "$DIR/feishu-bridge.log"
 
 echo -e "\n${GREEN}========================================${NC}"
 echo -e "${GREEN}  部署完成！${NC}"
 echo -e "${GREEN}========================================${NC}"
 echo "停止: pkill -f 'node.*server.js'"
-echo "日志: tail -f /var/log/feishu-bridge.log"
+echo "日志: tail -f /opt/feishu-bridge/feishu-bridge.log"
 echo "配置: vim /opt/feishu-bridge/.env"
